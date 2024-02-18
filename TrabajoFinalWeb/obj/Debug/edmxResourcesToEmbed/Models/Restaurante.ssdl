@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RestauranteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="DBS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdPedido" Type="int" />
+    <Property Name="MontoTotal" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="IdModoDePago" Type="int" />
+  </EntityType>
+  <EntityType Name="DetalleBoleta">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdPedido" Type="int" Nullable="false" />
+    <Property Name="MontoTotal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="IdModoDePago" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Empleado">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Contraseña" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="IdTipoEmpleado" Type="int" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Celular" Type="int" Nullable="false" />
+    <Property Name="Correo" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Direccion" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Sueldo" Type="money" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ModoDePago">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Pedido">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Atendido" Type="bit" Nullable="false" />
+    <Property Name="Detalle" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="IdEmpleado" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PPS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdProducto" Type="int" />
+    <Property Name="IdPedido" Type="int" />
+    <Property Name="Observacion" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Producto">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="IdTipoProducto" Type="int" Nullable="false" />
+    <Property Name="Precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="imagen" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Productos_Pedidos">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdProducto" Type="int" Nullable="false" />
+    <Property Name="IdPedido" Type="int" Nullable="false" />
+    <Property Name="Observacion" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Atendido" Type="bit" />
+    <Property Name="Detalle" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TipoEmpleado">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Sueldo" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="TipoProducto">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_DBS_ModoDePago">
+    <End Role="ModoDePago" Type="Self.ModoDePago" Multiplicity="0..1" />
+    <End Role="DBS" Type="Self.DBS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ModoDePago">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DBS">
+        <PropertyRef Name="IdModoDePago" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DBS_PS">
+    <End Role="PS" Type="Self.PS" Multiplicity="0..1" />
+    <End Role="DBS" Type="Self.DBS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DBS">
+        <PropertyRef Name="IdPedido" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetalleBoleta_ModoDePago">
+    <End Role="ModoDePago" Type="Self.ModoDePago" Multiplicity="1" />
+    <End Role="DetalleBoleta" Type="Self.DetalleBoleta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ModoDePago">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DetalleBoleta">
+        <PropertyRef Name="IdModoDePago" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetalleBoleta_Pedido">
+    <End Role="Pedido" Type="Self.Pedido" Multiplicity="1" />
+    <End Role="DetalleBoleta" Type="Self.DetalleBoleta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pedido">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DetalleBoleta">
+        <PropertyRef Name="IdPedido" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Empleado_TipoEmpleado">
+    <End Role="TipoEmpleado" Type="Self.TipoEmpleado" Multiplicity="1" />
+    <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TipoEmpleado">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Empleado">
+        <PropertyRef Name="IdTipoEmpleado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pedido_Pedido">
+    <End Role="Empleado" Type="Self.Empleado" Multiplicity="1" />
+    <End Role="Pedido" Type="Self.Pedido" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Empleado">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Pedido">
+        <PropertyRef Name="IdEmpleado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PPS_Producto">
+    <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+    <End Role="PPS" Type="Self.PPS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producto">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PPS">
+        <PropertyRef Name="IdProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PPS_PS">
+    <End Role="PS" Type="Self.PS" Multiplicity="0..1" />
+    <End Role="PPS" Type="Self.PPS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PPS">
+        <PropertyRef Name="IdPedido" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Producto_TipoProducto">
+    <End Role="TipoProducto" Type="Self.TipoProducto" Multiplicity="1" />
+    <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TipoProducto">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Producto">
+        <PropertyRef Name="IdTipoProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Productos_Pedidos_Pedido">
+    <End Role="Pedido" Type="Self.Pedido" Multiplicity="1" />
+    <End Role="Productos_Pedidos" Type="Self.Productos_Pedidos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pedido">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Productos_Pedidos">
+        <PropertyRef Name="IdPedido" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Productos_Pedidos_Producto">
+    <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+    <End Role="Productos_Pedidos" Type="Self.Productos_Pedidos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producto">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Productos_Pedidos">
+        <PropertyRef Name="IdProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="eliminar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="eliminarTodo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="RestauranteModelStoreContainer">
+    <EntitySet Name="DBS" EntityType="Self.DBS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DetalleBoleta" EntityType="Self.DetalleBoleta" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ModoDePago" EntityType="Self.ModoDePago" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Pedido" EntityType="Self.Pedido" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PPS" EntityType="Self.PPS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Productos_Pedidos" EntityType="Self.Productos_Pedidos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PS" EntityType="Self.PS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TipoEmpleado" EntityType="Self.TipoEmpleado" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TipoProducto" EntityType="Self.TipoProducto" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_DBS_ModoDePago" Association="Self.FK_DBS_ModoDePago">
+      <End Role="ModoDePago" EntitySet="ModoDePago" />
+      <End Role="DBS" EntitySet="DBS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DBS_PS" Association="Self.FK_DBS_PS">
+      <End Role="PS" EntitySet="PS" />
+      <End Role="DBS" EntitySet="DBS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetalleBoleta_ModoDePago" Association="Self.FK_DetalleBoleta_ModoDePago">
+      <End Role="ModoDePago" EntitySet="ModoDePago" />
+      <End Role="DetalleBoleta" EntitySet="DetalleBoleta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetalleBoleta_Pedido" Association="Self.FK_DetalleBoleta_Pedido">
+      <End Role="Pedido" EntitySet="Pedido" />
+      <End Role="DetalleBoleta" EntitySet="DetalleBoleta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Empleado_TipoEmpleado" Association="Self.FK_Empleado_TipoEmpleado">
+      <End Role="TipoEmpleado" EntitySet="TipoEmpleado" />
+      <End Role="Empleado" EntitySet="Empleado" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pedido_Pedido" Association="Self.FK_Pedido_Pedido">
+      <End Role="Empleado" EntitySet="Empleado" />
+      <End Role="Pedido" EntitySet="Pedido" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PPS_Producto" Association="Self.FK_PPS_Producto">
+      <End Role="Producto" EntitySet="Producto" />
+      <End Role="PPS" EntitySet="PPS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PPS_PS" Association="Self.FK_PPS_PS">
+      <End Role="PS" EntitySet="PS" />
+      <End Role="PPS" EntitySet="PPS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Producto_TipoProducto" Association="Self.FK_Producto_TipoProducto">
+      <End Role="TipoProducto" EntitySet="TipoProducto" />
+      <End Role="Producto" EntitySet="Producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Productos_Pedidos_Pedido" Association="Self.FK_Productos_Pedidos_Pedido">
+      <End Role="Pedido" EntitySet="Pedido" />
+      <End Role="Productos_Pedidos" EntitySet="Productos_Pedidos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Productos_Pedidos_Producto" Association="Self.FK_Productos_Pedidos_Producto">
+      <End Role="Producto" EntitySet="Producto" />
+      <End Role="Productos_Pedidos" EntitySet="Productos_Pedidos" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
